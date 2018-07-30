@@ -20,6 +20,9 @@ class GlobalTest:public testing::Environment
 public:
 	virtual void SetUp()
 	{
+	cout<<"RFtest Author:HuiLi"<<endl;
+	cout<<"Email: huili@ruijie.com.cn"<<endl;
+	cout<<"2018/7/30"<<endl;
 	}
 	virtual void TearDown()
 	{

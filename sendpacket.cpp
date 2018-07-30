@@ -28,12 +28,23 @@ TEST(SENDPACKET,SendPacket1)
         stream = popen(cbuf,"r");
         fread(rbuf,sizeof(char),sizeof(rbuf),stream);
 
-	sprintf(cbuf,"sudo ping -c 1 30.2.1.1 2>&1");
+	sprintf(cbuf,"sudo iperf -s 2>&1 &");
+	stream = popen(cbuf,"r");
+	fread(rbuf,sizeof(char),sizeof(rbuf),stream);
+
+	sprintf(cbuf,"iperf -c 30.2.1.1 -t 1");
 	stream = popen(cbuf,"r");
 	memset(rbuf,0,sizeof(rbuf));
 	fread(rbuf,sizeof(char),sizeof(rbuf),stream);
-	char *p = strstr(rbuf,"64 bytes from 30.2.1.1: icmp_seq=1 ttl=64");
-	p[strlen("64 bytes from 30.2.1.1: icmp_seq=1 ttl=64")] = 0;
-	sprintf(cbuf,"64 bytes from 30.2.1.1: icmp_seq=1 ttl=64");
-	ASSERT_STREQ(p,cbuf);
+
+	char *p1 = strstr(rbuf,"GBytes");
+	p1 += strlen("GBytes");
+	//printf(":%s:\n",p1);
+	char *pEnd = NULL;
+	double gb = strtod(p1,&pEnd);
+	printf("Bandwidth:%.3lf Gbits/sec\n",gb);
+	//char *p = strstr(rbuf,"64 bytes from 30.2.1.1: icmp_seq=1 ttl=64");
+	//p[strlen("64 bytes from 30.2.1.1: icmp_seq=1 ttl=64")] = 0;
+	//sprintf(cbuf,"64 bytes from 30.2.1.1: icmp_seq=1 ttl=64");
+	//ASSERT_STREQ(p,cbuf);
 }
