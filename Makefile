@@ -1,14 +1,15 @@
 all:test
-test:test.o vlan.o ipconfig.o sendpacket.o
-	g++ -o test test.o vlan.o ipconfig.o sendpacket.o -lgtest  -lpthread
-test.o:
-	g++ -c test.cpp
-vlan.o:
-	g++ -c vlan.cpp
-ipconfig.o:
-	g++ -c ipconfig.cpp
-sendpacket.o:
-	g++ -c sendpacket.cpp
+
+CPP_FILES	:= $(wildcard *.cpp)
+OBJ_FILES	:= $(addprefix ./,$(notdir $(CPP_FILES:.cpp=.o)))
+
+FILES	:= ./%.cpp
+
+./%.o: $(FILES)
+	g++ -c -o $@ $<
+
+test: $(OBJ_FILES)
+	g++ -o $@ $^ -lgtest -lpthread
 
 clean:
 	rm -rf test *.o

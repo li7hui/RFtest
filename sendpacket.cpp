@@ -38,6 +38,10 @@ TEST(SENDPACKET,SendPacket1)
 	fread(rbuf,sizeof(char),sizeof(rbuf),stream);
 
 	char *p1 = strstr(rbuf,"GBytes");
+	if(p1 == NULL){
+	ASSERT_FALSE(1==1);
+	return;
+	}
 	p1 += strlen("GBytes");
 	//printf(":%s:\n",p1);
 	char *pEnd = NULL;
