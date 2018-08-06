@@ -15,17 +15,17 @@
 using namespace std; 
 #include<gtest/gtest.h>
 
-TEST(INTERFACEDOWN,interfacedown1)
+TEST(INTERFACESTARTUP,interfacestartup1)
 {
         FILE *file = fopen("testbed.csv","r");
         char rbuf[4096];
         char cbuf[1024];
 	memset(rbuf,0,4096);
 	fread(rbuf,4096,1,file);
-	char *interfacestr = strstr(rbuf,"interfacedown,Ethernet,");
+	char *interfacestr = strstr(rbuf,"interfacestartup,Ethernet,");
 	char *id = NULL;
 	if(interfacestr != NULL){
-	interfacestr += strlen("interfacedown,Ethernet,");
+	interfacestr += strlen("interfacestartup,Ethernet,");
 	id = interfacestr;
 	while(*interfacestr != '\n')
 		interfacestr++;
@@ -37,7 +37,7 @@ TEST(INTERFACEDOWN,interfacedown1)
 	char interfacename[64];
 	sprintf(interfacename,"Ethernet%d",num);
 	printf("name:%s\n",interfacename);	
-	sprintf(cbuf,"sudo config interface shutdown %s 2>&1",interfacename);
+	sprintf(cbuf,"sudo config interface startup %s 2>&1",interfacename);
  	FILE *stream = popen(cbuf,"r");
 
 	sprintf(cbuf,"show interface status|grep %s|awk -F' ' '{print $7}'",interfacename);
@@ -45,7 +45,7 @@ TEST(INTERFACEDOWN,interfacedown1)
 	memset(rbuf,0,4096);
         fread(rbuf,sizeof(char),sizeof(rbuf),stream);
 	printf("rbuf:%s\n",rbuf);
-	ASSERT_STREQ(rbuf,"down\n");	
+	ASSERT_STREQ(rbuf,"up\n");	
 #if 0
 	char mac[128];
 	sprintf(mac,"%s",rbuf);

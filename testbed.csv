@@ -1,4 +1,4 @@
 interfacedown,Ethernet,0
-interfacestarup,Ethernet,0
+interfacestartup,Ethernet,0
 maclearn,server,172.31.104.104
 arplearn,server,20.2.1.35,mac,ec:0d:9a:7f:35:0e
